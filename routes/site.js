@@ -7,10 +7,15 @@ var Einkauf = require('../models/einkauf.js');
 router.get('/', function (req, res) {
 
   Einkauf.find({ "date_end": {$exists: false}}).exec((err, einkäufe) => {
-    if (!err) {
+    if (!err && einkäufe[0]) {
       res.render('index', {
         'einkauf': einkäufe[0]
       });
+    } else {
+      let newEinkauf = new Einkauf({ date_begin: Date.now(), items: []});
+      newEinkauf.save(function (err) {
+          res.redirect('/');
+        });
     }
   });
 
@@ -38,6 +43,10 @@ router.get('/stats', function (req, res) {
     }
   });
 
+});
+
+router.get('/complete', function (req, res) {
+  res.render('complete', {});
 });
 
 module.exports = router;

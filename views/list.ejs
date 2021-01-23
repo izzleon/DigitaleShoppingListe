@@ -9,18 +9,18 @@
 
     <%- include('./partials/nav'); %>
 
-        <br class="mt-10">
+        <hr class="mb-20">
 
         <div class="container mx-auto">
             <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl relative">
-                <h1 class="text-2xl">Alle Einkäufe</h1>
+                <h1 class="text-2xl">Alte Einkäufe</h1>
                 <%- include('./partials/close'); %>
                 <hr>
-                <div class="overflow-y-scroll mt-2" style="max-height: calc(100vh - 200px);">
+                <div class="mt-2">
                     <% for(var i=0; i < einkaeufe.length; i++) { %>
                         <div class="bg-white mb-4 p-4 shadow-xl">
                             <div class="flex justify-between items-center">
-                                <p>Einkauf vom <%= einkaeufe[i].date_end.toLocaleDateString('de-DE'); %></p>
+                                <p>Einkauf vom <%= einkaeufe[i].date_end.toLocaleString('de-DE'); %></p>
                                 <p class="text-lg">€ <%= einkaeufe[i].sum %></p>
                             </div>
                         </div>
