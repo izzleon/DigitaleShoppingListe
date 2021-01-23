@@ -12,14 +12,19 @@
         <br class="mt-10">
 
         <div class="container mx-auto">
-            <% for(var i=0; i < eikaeufe.length; i++) { %>
-                <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl">
-                    <div class="flex justify-between items-center">
-                        <p>Einkauf vom <%= eikaeufe[i].date_end.toLocaleDateString('de-DE'); %></p>
-                        <p class="text-lg">€ <%= eikaeufe[i].sum %></p>
+            <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl relative">
+                <h1>Alle Einkäufe</h1>
+                <%- include('./partials/close'); %>
+                <hr>
+                <% for(var i=0; i < eikaeufe.length; i++) { %>
+                    <div class="bg-white mx-2 my-4 p-4 shadow-xl">
+                        <div class="flex justify-between items-center">
+                            <p>Einkauf vom <%= eikaeufe[i].date_end.toLocaleDateString('de-DE'); %></p>
+                            <p class="text-lg">€ <%= eikaeufe[i].sum %></p>
+                        </div>
                     </div>
-                </div>
-            <% } %>
+                <% } %>
+            </div>
         </div>
 
 </body>
