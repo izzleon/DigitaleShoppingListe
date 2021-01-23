@@ -3,6 +3,7 @@
 
 <head>
     <%- include('./partials/head'); %>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 </head>
 
 <body class="bg-gray-300 select-none">
@@ -15,7 +16,112 @@
             <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl relative">
                 <h1 class="text-2xl">Statistik</h1>
                 <%- include('./partials/close'); %>
-                <hr>
+                    <hr>
+
+                    <div id="stats-data" data-stats='<%= JSON.stringify(einkäufe) %>'></div>
+
+                    <div class="flex flex-col lg:flex-row w-full items-center">
+                        <div class="w-full lg:w-1/4 p-2 mx-4 my-4 bg-white border-b-2 border-purple-500 shadow-xl">
+                            <div class="my-2 flex justify-between">
+                                <p>Durchschnitt:</p>
+                                <p id="stat_avg">€ 0</p>
+                            </div>
+
+                            <div class="my-2 flex justify-between">
+                                <p>Median:</p>
+                                <p id="stat_med">€ 0</p>
+                            </div>
+
+                            <div class="my-2 flex justify-between">
+                                <p>Standardabweichung:</p>
+                                <p id="stat_div">€ 0</p>
+                            </div>
+                        </div>
+
+                        <div class="w-full lg:w-3/4">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+
+
+                    <script>
+                        var data = JSON.parse(document.getElementById('stats-data').dataset.stats);
+
+                        let diagramm_data = [];
+                        let diagramm_lables = [];
+
+                        for (let index = 0; index < data.length; index++) {
+                            const element = data[index];
+                            let date = new Date(element.date_end)
+                            date = (date.getMonth() + 1) + " | " + date.getFullYear()
+
+                            if (diagramm_lables.indexOf(date) === -1) {
+                                diagramm_lables.push(date)
+                                diagramm_data.push(element.sum)
+                            } else {
+                                diagramm_data.push(diagramm_data.pop() + element.sum);
+                            }
+
+                        }
+
+                        const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
+
+                        function median(val) {
+                            val = val.sort((a, b) => a - b);
+                            let lowMiddle = Math.floor((val.length - 1) / 2);
+                            let highMiddle = Math.ceil((val.length - 1) / 2);
+                            return (val[lowMiddle] + val[highMiddle]) / 2;
+                        }
+
+                        function getStandardDeviation(array) {
+                            const n = array.length
+                            const mean = array.reduce((a, b) => a + b) / n
+                            return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+                        }
+
+                        document.getElementById('stat_avg').innerHTML = '€ ' + average(diagramm_data).toFixed(2);
+                        document.getElementById('stat_med').innerHTML = '€ ' + median(Array.from(diagramm_data));
+                        document.getElementById('stat_div').innerHTML = '€ ' + getStandardDeviation(diagramm_data).toFixed(2);
+
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: diagramm_lables,
+                                datasets: [{
+                                    label: 'Alle Einkäufe des Monats',
+                                    data: diagramm_data,
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                tooltips: {
+                                    callbacks: {
+                                        label: function (tooltipItem, data) {
+                                            return tooltipItem.yLabel + "€";
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                },
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                aspectRatio: 1,
+                            }
+                        });
+                    </script>
+
             </div>
         </div>
 
