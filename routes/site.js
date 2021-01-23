@@ -6,12 +6,38 @@ var Einkauf = require('../models/einkauf.js')
 // Home page route.
 router.get('/', function (req, res) {
 
-  Einkauf.find().limit(10).sort({ date_begin: -1 }).exec((err, einkäufe) => {
-    res.render('index', {
-      'eikaeufe': einkäufe
-    });
+  Einkauf.find({ "date_end": {$exists: false}}).exec((err, einkäufe) => {
+    if (!err) {
+      res.render('index', {
+        'eikaeufe': einkäufe
+      });
+    }
   });
 
 })
+
+router.get('/list', function (req, res) {
+
+  Einkauf.find({ "date_end": {$exists: true, $ne: null}}).sort({ date_begin: -1 }).exec((err, einkäufe) => {
+    if (!err) {
+      res.render('list', {
+        'eikaeufe': einkäufe
+      });
+    }
+  });
+
+});
+
+router.get('/stats', function (req, res) {
+
+  Einkauf.find({ "date_end": {$exists: true, $ne: null}}).sort({ date_begin: -1 }).exec((err, einkäufe) => {
+    if (!err) {
+      res.render('stats', {
+        
+      });
+    }
+  });
+
+});
 
 module.exports = router;
