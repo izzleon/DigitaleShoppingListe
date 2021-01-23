@@ -14,7 +14,10 @@ var Einkauf = new Schema({
       },
     sum: {
         type: Number,
-      }
+      },
+    items: {
+      type: Array,
+    }
   });
 
   module.exports = mongoose.model('Einkauf', Einkauf)

@@ -12,27 +12,39 @@
         <br class="mt-10">
 
         <div class="container mx-auto">
-            <% for(var i=0; i < eikaeufe.length; i++) { %>
-                <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl">
 
-                    <!-- Fertiger Einkauf -->
-                    <% if(eikaeufe[i].sum){ %>
-                        <div class="flex justify-between items-center">
-                        <p>
-                            Einkauf vom <%= eikaeufe[i].date_end.toLocaleDateString('de-DE'); %>
-                        </p>
-                        <p class="text-lg">
-                            € <%= eikaeufe[i].sum %>
-                        </p>
+            <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl">
+                <h1 class="text-2xl">Aktuelle Einkaufsliste</h1>
+                <hr>
+
+                <div id="list" class="mt-2">
+                    <% for(var i=0; i < einkauf.items.length; i++) { %>
+                        <div class="bg-white mb-4 p-4 shadow-xl <% if(einkauf.items[i].completed){ %> hidden <% } %>">
+                            <div class="flex justify-between items-center">
+                                <p><%= einkauf.items[i].name; %></p>
+                                <form action="/api/items/new" method="post" class="flex justify-between items-center"></form>
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                </form>
+                            </div>
                         </div>
-
-                     <!-- Offener Einkauf -->
-                     <% } else{ %>  
-                        <svg class="w-8 h-8 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                      <% } %>
-
+                    <% } %>
                 </div>
-                <% } %>
+                
+                <hr class="my-2 border-purple-500">
+
+                <div class="bg-white mb-4 p-4 shadow-xl">
+                        <form action="/api/items/new" method="post" class="flex justify-between items-center">
+                            <input type="text" placeholder="Neues Produkt" name="name" class="border-b-2 border-gray-200 focus:border-black p-1 flex-grow">
+                            <button type="submit" class="ml-8">
+                                <svg class="w-8 h-8 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                </div>
+            </div>
         </div>
 
 </body>
