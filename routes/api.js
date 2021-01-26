@@ -1,11 +1,11 @@
 /**
  * API Router enthält:
  *    * escapeHtml Funktion
- *    - Homepage
- *    - Liste der Einkäufe
- *    - Spezifischen Einkauf anzeigen
- *    - Statistik Page
- *    - Einkauf abschließen Page
+ *    - Item erstellen
+ *    - Item completed
+ *    - Item löschen
+ *    - Einkauf fertigstellen
+ *    - Einkauf löschen
  */
 // ----------------------------------------------------------------
 
@@ -48,7 +48,7 @@ router.post('/items/new', function (req, res) {
 })
 
 
-// Item fertigstellen
+// Item completed
 router.post('/items/complete/:id', function (req, res) {
   // Id aus Url-Parameter auslesen
   let id = req.params.id
