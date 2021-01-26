@@ -33,6 +33,19 @@ router.get('/list', function (req, res) {
 
 });
 
+router.get('/list/:id', function (req, res) {
+  let id = req.params.id
+
+  Einkauf.find({"_id": id}).exec((err, einkäufe) => {
+    if (!err) {
+      res.render('show', {
+        'einkauf': einkäufe[0]
+      });
+    }
+  });
+
+});
+
 router.get('/stats', function (req, res) {
 
   Einkauf.find({"date_end": {$exists: true, $ne: null}}).sort({ date_end: 1 }).exec((err, einkäufe) => {
