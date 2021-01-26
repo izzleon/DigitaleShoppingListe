@@ -12,9 +12,6 @@ app.engine('ejs', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
-// Statisch
-app.use(express.static('public'));
-
 // Start Server
 app.listen(port, function () {
     console.log(`Example app listening on ${port}!`);
