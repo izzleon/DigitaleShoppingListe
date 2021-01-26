@@ -54,6 +54,17 @@ router.post('/items/delete/:id', function (req, res) {
   });
 })
 
+router.post('/einkauf/delete/:id', function (req, res) {
+  let id = req.params.id
+
+  Einkauf.deleteOne({"_id": id}).exec((err, einkäufe) => {
+    if (!err) {
+      res.redirect('/list');
+    }
+  });
+
+});
+
 router.post('/complete', function (req, res) {
   let sum = req.body.sum.replace(',', '.');
 
