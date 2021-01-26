@@ -12,11 +12,13 @@
         <hr class="mb-20">
 
         <div class="container mx-auto">
-
             <div class="bg-gray-100 mx-2 my-4 p-4 shadow-xl">
+
+                <!-- Head -->
                 <h1 class="text-2xl">Aktuelle Einkaufsliste</h1>
                 <hr>
 
+                <!-- Formularfeld eingabe + abschließen -->
                 <div class="md:flex md:flex-row-reverse md:justify-between md:items-center">
                     <form action="/complete" method="get" class="w-full md:w-1/3 md:pl-8">
                         <button type="submit" class="w-full bg-none border-2 rounded-lg border-purple-500 hover:border-purple-300 text-purple-500 hover:text-purple-300 text-center p-2 mt-4">
@@ -38,6 +40,7 @@
 
                 <hr class="my-2 md:my-4 border-purple-500">
 
+                <!-- Liste der Items -->
                 <div class=" mt-2">
                     <% for(var i=0; i < einkauf.items.length; i++) { %>
                         <div class="bg-white border-b-2 border-purple-500 mb-4 p-4 shadow-xl <% if(einkauf.items[i].completed){ %> line-through bg-gray-100 border-none mx-2 text-gray-700 <% } %> transition duration-500 ease-in-out transform hover:translate-x-1 hover:shadow-2xl">
@@ -45,7 +48,9 @@
                                 <p>
                                     <%= einkauf.items[i].name; %>
                                 </p>
+
                                 <div class="flex">
+                                    <!-- Item abschließen -->
                                     <form action="/api/items/complete/<%= i %>" method="post" class="flex justify-between items-center">
                                         <button type="submit">
                                             <svg class="w-7 h-7 hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -53,6 +58,8 @@
                                             </svg>
                                         </button>
                                     </form>
+
+                                    <!-- Item löschen -->
                                     <form action="/api/items/delete/<%= i %>" method="post" class="flex justify-between items-center">
                                         <button type="submit" class="ml-4">
                                             <svg class="w-7 h-7 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -61,6 +68,7 @@
                                         </button>
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                         <% } %>

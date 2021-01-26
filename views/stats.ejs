@@ -3,7 +3,7 @@
 
 <head>
     <%- include('./partials/head'); %>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 </head>
 
 <body class="bg-gray-300 select-none">
@@ -21,6 +21,8 @@
                     <div id="stats-data" data-stats='<%= JSON.stringify(einkäufe) %>'></div>
 
                     <div class="flex flex-col lg:flex-row-reverse w-full items-center">
+
+                        <!-- Statistik Div -->
                         <div class="w-full lg:w-1/4 p-2 mx-4 my-4 bg-white border-b-2 border-purple-500 shadow-xl">
                             <div class="my-2 flex justify-between">
                                 <p>Durchschnitt:</p>
@@ -38,18 +40,21 @@
                             </div>
                         </div>
 
+                        <!-- Diagramm -->
                         <div class="w-full lg:w-3/4">
                             <canvas id="myChart"></canvas>
                         </div>
                     </div>
 
 
+                    <!-- JS -->
                     <script>
                         var data = JSON.parse(document.getElementById('stats-data').dataset.stats);
 
                         let diagramm_data = [];
                         let diagramm_lables = [];
 
+                        // Diagrammdaten in format bringen
                         for (let index = 0; index < data.length; index++) {
                             const element = data[index];
                             let date = new Date(element.date_end)
@@ -64,8 +69,10 @@
 
                         }
 
+                        // Funktion Durchschnitt
                         const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
 
+                        // Funktion Median
                         function median(val) {
                             val = val.sort((a, b) => a - b);
                             let lowMiddle = Math.floor((val.length - 1) / 2);
@@ -73,16 +80,19 @@
                             return (val[lowMiddle] + val[highMiddle]) / 2;
                         }
 
+                        // Funktion Standartabweichung
                         function getStandardDeviation(array) {
                             const n = array.length
                             const mean = array.reduce((a, b) => a + b) / n
                             return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
                         }
 
+                        // Statistiken Berechnen
                         document.getElementById('stat_avg').innerHTML = '€ ' + average(diagramm_data).toFixed(2);
                         document.getElementById('stat_med').innerHTML = '€ ' + median(Array.from(diagramm_data));
                         document.getElementById('stat_div').innerHTML = '€ ' + getStandardDeviation(diagramm_data).toFixed(2);
 
+                        // Diagramm erstellen
                         var ctx = document.getElementById('myChart').getContext('2d');
                         var myChart = new Chart(ctx, {
                             type: 'line',
