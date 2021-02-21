@@ -33,11 +33,6 @@
                                 <p>Median:</p>
                                 <p id="stat_med">€ 0</p>
                             </div>
-
-                            <div class="my-2 flex justify-between">
-                                <p>Standardabweichung:</p>
-                                <p id="stat_div">€ 0</p>
-                            </div>
                         </div>
 
                         <!-- Diagramm -->
@@ -80,17 +75,9 @@
                             return (val[lowMiddle] + val[highMiddle]) / 2;
                         }
 
-                        // Funktion Standartabweichung
-                        function getStandardDeviation(array) {
-                            const n = array.length
-                            const mean = array.reduce((a, b) => a + b) / n
-                            return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
-                        }
-
                         // Statistiken Berechnen
                         document.getElementById('stat_avg').innerHTML = '€ ' + average(diagramm_data).toFixed(2);
                         document.getElementById('stat_med').innerHTML = '€ ' + median(Array.from(diagramm_data));
-                        document.getElementById('stat_div').innerHTML = '€ ' + getStandardDeviation(diagramm_data).toFixed(2);
 
                         // Diagramm erstellen
                         var ctx = document.getElementById('myChart').getContext('2d');
