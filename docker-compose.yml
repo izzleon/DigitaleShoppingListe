@@ -6,7 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     image: nodejs
-    container_name: nodejs
     restart: unless-stopped
     env_file: .env
     environment:
@@ -15,14 +14,18 @@ services:
       - MONGO_HOSTNAME=db
       - MONGO_PORT=$MONGO_PORT
       - MONGO_DB=$MONGO_DB
-    ports:
-      - "80:8080"
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
     networks:
       - app-network
     command: /home/node/app/node_modules/.bin/nodemon app.js
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=api"
+      - "traefik.port=8080"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/"
 
   db:
     image: mongo:4.1.8-xenial
@@ -38,6 +41,27 @@ services:
       - dbdata:/data/db
     networks:
       - app-network
+
+  traefik:
+    image: traefik:1.7
+    container_name: traefik
+    command:
+      - "--api"
+      - "--docker"
+      - "--docker.watch"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=localhost"
+      - "traefik.port=8080"
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    networks:
+      - app-network
+      - default
 
 networks:
   app-network:

@@ -28,5 +28,5 @@ mongoose.connect(url, options).then( function() {
     console.log('MongoDB is connected');
   })
     .catch( function(err) {
-    console.log(err);
+      process.exit(-1)
   });
